@@ -10,7 +10,7 @@ export class CustomerService {
 
     constructor(private localStorageService: LocalStorageService) { }
 
-    getCustomers(): Customer[] {
+    getCustomers(): CustomerBase[] {
         let customers = this.localStorageService.getObject(CUSTOMERS_KEY);
         if (!customers) {
             customers = [];
@@ -18,9 +18,15 @@ export class CustomerService {
         return customers;
     }
 
-    addCustomer(customer: Customer) {
+    addCustomer(customer: CustomerBase) {
         const customers = this.getCustomers();
         customers.push(customer);
+        this.localStorageService.setObject(CUSTOMERS_KEY, customers);
+    }
+
+    insertCustomer(index, customer: CustomerBase) {
+        const customers = this.getCustomers();
+        customers.splice(index, 0, customer);
         this.localStorageService.setObject(CUSTOMERS_KEY, customers);
     }
 
@@ -28,17 +34,18 @@ export class CustomerService {
         const customers = this.getCustomers();
         const customerIndex = customers.findIndex(customer => customer.id === id);
         customers.splice(customerIndex, 1);
+        this.localStorageService.setObject(CUSTOMERS_KEY, customers);
     }
 
-    modifyCustomer(id: number, newCustomer: Customer) {
+    modifyCustomer(id: number, newCustomer: CustomerBase) {
         const customers = this.getCustomers();
-        let customer = customers.find(customer => customer.id === id);
-        customer = newCustomer;
-        
+        let customerIndex = customers.findIndex(customer => customer.id === id);
+        customers[customerIndex] = newCustomer;
+        this.localStorageService.setObject(CUSTOMERS_KEY, customers);
     }
 }
 
-export interface Customer {
+export class CustomerBase {
     id: number;
     name: string;
     tel: string;

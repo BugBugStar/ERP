@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
 
@@ -27,6 +28,7 @@ registerLocaleData(zh);
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     
     /** 导入 ng-zorro-antd 模块 **/
