@@ -1,0 +1,33 @@
+<nz-table #basicTable [nzData]="elementList">
+    <thead>
+        <tr>
+            <th *ngFor="let head of elementKeys">{{ head }}</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of basicTable.data">
+            <td *ngFor="let head of elementKeys">
+                <div class="editable-cell" *ngIf="!data.editing || head === 'id'; else editTpl">
+                    <div class="editable-cell-value-wrap" (click)="startEdit(data.id, $event)">
+                        {{ data[head] }}
+                    </div>
+                </div>
+                <ng-template #editTpl>
+                    <input type="text" nz-input [(ngModel)]="data[head + '_editing']" />
+                </ng-template>
+            </td>
+            <td>
+                <span *ngIf="data.editing" class="glyphicon glyphicon-ok" aria-hidden="true"
+                    title="Save"(click)="onclickSave(data.id)"></span>
+                <span *ngIf="data.editing" class="glyphicon glyphicon-remove" aria-hidden="true"
+                    title="Cancel" (click)="onclickCancel(data.id)"></span>
+                <span *ngIf="!data.editing" class="glyphicon glyphicon-pencil" aria-hidden="true"
+                    title="Edit" (click)="onclickEdit(data.id)"></span>
+                <span *ngIf="!data.editing" class="glyphicon glyphicon-trash" aria-hidden="true"
+                    title="Delete" (click)="onclickDelete(data.id)"></span>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+<button (click)="addRow()">Add</button>

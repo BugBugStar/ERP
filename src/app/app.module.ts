@@ -12,29 +12,31 @@ import { SalesSummaryComponent } from './sales-summary/sales-summary.component';
 import { CustomersComponent } from './customers/customers.component';
 import { RepositoryComponent } from './repository/repository.component';
 
-/** 配置 angular i18n **/
+/* 配置 angular i18n */
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
+import { InputTableComponent } from './input-table/input-table.component';
 registerLocaleData(zh);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    CreateOrderComponent,
-    SalesSummaryComponent,
-    CustomersComponent,
-    RepositoryComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    AppRoutingModule,
-    
-    /** 导入 ng-zorro-antd 模块 **/
-    NgZorroAntdModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        CreateOrderComponent,
+        SalesSummaryComponent,
+        CustomersComponent,
+        RepositoryComponent,
+        InputTableComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        AppRoutingModule,
+
+        /* 导入 ng-zorro-antd 模块 */
+        NgZorroAntdModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

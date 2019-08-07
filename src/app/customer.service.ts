@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
 
-const CUSTOMERS_KEY = "customers";
+const CUSTOMERS_KEY = 'customers';
 
 @Injectable({
     providedIn: 'root'
