@@ -93,7 +93,7 @@ export class InputTableComponent implements OnInit {
     onclickEdit(element: Element) {
         element.editing = true;
         for (const property of this.elementKeys) {
-            const key = property instanceof ElementProperty ? property.name : property;
+            const key = typeof property === 'object' ? property.name : property;
             element[key + editingMark] = element[key];
         }
     }
