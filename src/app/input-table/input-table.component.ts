@@ -1,15 +1,17 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { InputTableService, ElementBase } from '../input-table.service';
+import { Observable } from 'rxjs';
 
 const editingMark = '_editing';
 class Element extends ElementBase {
     editing?: boolean;
     new?: boolean;
 }
-class ElementProperty {
+export class ElementProperty {
     name?: string;
     option?: string[] | any[];
-    filterKey: string;
+    searchFn?: (keyword: string) => Observable<any[]>;
+    filterKey?: string;
     readonly?: boolean;
     disabled?: boolean;
 }
@@ -31,19 +33,21 @@ export class InputTableComponent implements OnInit {
 
     ngOnInit() {
         this.initElementList();
-        // if (this.elementKeys.length === 0
-        //     || (this.elementKeys.length > 0 && typeof this.elementKeys[0] === 'string' )) {
-        //     this.titleHeads = Object.assign(this.elementKeys);
-        // } else {
         this.titleHeads = this.elementKeys.map(element => {
-            // if (typeof element === 'string') {
-            if (element instanceof ElementProperty) {
+            if (typeof element === 'object') {
                 return element.name;
             } else {
                 return element;
             }
         });
-        // }
+        this.elementKeys.forEach(elementKey => {
+            if (typeof elementKey !== 'object') {
+                return;
+            }
+            if (elementKey.searchFn) {
+                this.onSearch('', elementKey);
+            }
+        })
     }
 
     initElementList() {
@@ -107,5 +111,11 @@ export class InputTableComponent implements OnInit {
 
     onclickDetailBtn(element: Element) {
         this.onclickDetail.emit(element);
+    }
+
+    onSearch($event: string, head: ElementProperty) {
+        head.searchFn($event).subscribe((itemList: any[]) => {
+            head.option = itemList;
+        });
     }
 }

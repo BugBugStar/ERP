@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
 
@@ -11,11 +12,11 @@ import { CreateOrderComponent } from './create-order/create-order.component';
 import { SalesSummaryComponent } from './sales-summary/sales-summary.component';
 import { CustomersComponent } from './customers/customers.component';
 import { RepositoryComponent } from './repository/repository.component';
+import { InputTableComponent } from './input-table/input-table.component';
 
 /* 配置 angular i18n */
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { InputTableComponent } from './input-table/input-table.component';
 registerLocaleData(zh);
 
 @NgModule({
@@ -31,6 +32,7 @@ registerLocaleData(zh);
     imports: [
         BrowserModule,
         FormsModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
 
         /* 导入 ng-zorro-antd 模块 */

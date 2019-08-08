@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from './local-storage.service';
+import { InputTableService, ElementBase } from './input-table.service';
 
 const CUSTOMERS_KEY = 'customers';
 
@@ -8,49 +8,34 @@ const CUSTOMERS_KEY = 'customers';
 })
 export class CustomerService {
 
-    constructor(private localStorageService: LocalStorageService) { }
+    constructor(private inputTableService: InputTableService) { }
 
     getCustomers(): CustomerBase[] {
-        let customers = this.localStorageService.getObject(CUSTOMERS_KEY);
-        if (!customers) {
-            customers = [];
-        }
-        return customers;
+        return this.inputTableService.getElementList(CUSTOMERS_KEY) as CustomerBase[];
     }
 
     addCustomer(customer: CustomerBase) {
-        const customers = this.getCustomers();
-        customers.push(customer);
-        this.localStorageService.setObject(CUSTOMERS_KEY, customers);
+        this.inputTableService.addElement(CUSTOMERS_KEY, customer);
     }
 
     insertCustomer(index, customer: CustomerBase) {
-        const customers = this.getCustomers();
-        customers.splice(index, 0, customer);
-        this.localStorageService.setObject(CUSTOMERS_KEY, customers);
+        this.inputTableService.insertElement(CUSTOMERS_KEY, index, customer);
     }
 
     deleteCustomer(id: number) {
-        const customers = this.getCustomers();
-        const customerIndex = customers.findIndex(customer => customer.id === id);
-        customers.splice(customerIndex, 1);
-        this.localStorageService.setObject(CUSTOMERS_KEY, customers);
+        this.inputTableService.deleteElement(CUSTOMERS_KEY, id);
     }
 
     modifyCustomer(id: number, newCustomer: CustomerBase) {
-        const customers = this.getCustomers();
-        let customerIndex = customers.findIndex(customer => customer.id === id);
-        customers[customerIndex] = newCustomer;
-        this.localStorageService.setObject(CUSTOMERS_KEY, customers);
+        this.inputTableService.modifyElement(CUSTOMERS_KEY, id, newCustomer);
     }
 }
 
-export class CustomerBase {
-    id: number;
+export class CustomerBase extends ElementBase {
     name: string;
     tel: string;
     address: string;
     company: string;
 }
 
-export const customerKeys = ["id", "name", "tel", "address", "company"];
+export const customerKeys = ['id', 'name', 'tel', 'address', 'company', ];

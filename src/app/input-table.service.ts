@@ -16,28 +16,28 @@ export class InputTableService {
         return valueList;
     }
 
-    addElement(tableKey: string, customer: ElementBase) {
+    addElement(tableKey: string, element: ElementBase) {
         const elementList = this.getElementList(tableKey);
-        elementList.push(customer);
+        elementList.push(element);
         this.localStorageService.setObject(tableKey, elementList);
     }
 
-    insertElement(tableKey: string, index, customer: ElementBase) {
+    insertElement(tableKey: string, index, element: ElementBase) {
         const elementList = this.getElementList(tableKey);
-        elementList.splice(index, 0, customer);
+        elementList.splice(index, 0, element);
         this.localStorageService.setObject(tableKey, elementList);
     }
 
     deleteElement(tableKey: string, id: number) {
         const elementList = this.getElementList(tableKey);
-        const elementIndex = elementList.findIndex(customer => customer.id === id);
+        const elementIndex = elementList.findIndex(element => element.id === id);
         elementList.splice(elementIndex, 1);
         this.localStorageService.setObject(tableKey, elementList);
     }
 
     modifyElement(tableKey: string, id: number, newElement: ElementBase) {
         const elementList = this.getElementList(tableKey);
-        const elementIndex = elementList.findIndex(customer => customer.id === id);
+        const elementIndex = elementList.findIndex(element => element.id === id);
         elementList[elementIndex] = newElement;
         this.localStorageService.setObject(tableKey, elementList);
     }
