@@ -1,10 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { InputTableService, ElementBase } from '../input-table.service';
 
 const editingMark = '_editing';
 class Element extends ElementBase {
     editing?: boolean;
     new?: boolean;
+}
+class ElementProperty {
+    name?: string;
+    option?: string[] | any[];
+    filterKey: string;
+    readonly?: boolean;
+    disabled?: boolean;
 }
 
 @Component({
@@ -13,14 +20,30 @@ class Element extends ElementBase {
     styleUrls: ['./input-table.component.css']
 })
 export class InputTableComponent implements OnInit {
-    elementList: Element[];
-    @Input() elementKeys: string[] = [];
+    @Input() elementKeys: (string | ElementProperty)[] = [];
     @Input() tableKey = '';
+    @Output() onclickDetail = new EventEmitter<ElementBase>();
+
+    elementList: Element[];
+    titleHeads: string[];
 
     constructor(private inputTableService: InputTableService) { }
 
     ngOnInit() {
         this.initElementList();
+        // if (this.elementKeys.length === 0
+        //     || (this.elementKeys.length > 0 && typeof this.elementKeys[0] === 'string' )) {
+        //     this.titleHeads = Object.assign(this.elementKeys);
+        // } else {
+        this.titleHeads = this.elementKeys.map(element => {
+            // if (typeof element === 'string') {
+            if (element instanceof ElementProperty) {
+                return element.name;
+            } else {
+                return element;
+            }
+        });
+        // }
     }
 
     initElementList() {
@@ -63,11 +86,11 @@ export class InputTableComponent implements OnInit {
         }
     }
 
-    onclickEdit(id: number) {
-        const elementIndex = this.elementList.findIndex(element => element.id === id);
-        this.elementList[elementIndex].editing = true;
-        for (const key of this.elementKeys) {
-            this.elementList[elementIndex][key + editingMark] = this.elementList[elementIndex][key];
+    onclickEdit(element: Element) {
+        element.editing = true;
+        for (const property of this.elementKeys) {
+            const key = property instanceof ElementProperty ? property.name : property;
+            element[key + editingMark] = element[key];
         }
     }
 
@@ -78,8 +101,11 @@ export class InputTableComponent implements OnInit {
         this.inputTableService.deleteElement(this.tableKey, id);
     }
 
-    onclickCancel(id: number) {
-        const elementIndex = this.elementList.findIndex(element => element.id === id);
-        this.elementList[elementIndex].editing = false;
+    onclickCancel(element: Element) {
+        element.editing = false;
+    }
+
+    onclickDetailBtn(element: Element) {
+        this.onclickDetail.emit(element);
     }
 }
