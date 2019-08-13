@@ -16,6 +16,14 @@ export class ElementProperty {
     disabled?: boolean;
 }
 
+export class Action {
+    isShow?: (element: ElementBase) => boolean;
+    class?: string;
+    getClass?: (element: ElementBase) => string;
+    title?: string;
+    click?: (element: ElementBase) => void;
+}
+
 @Component({
     selector: 'app-input-table',
     templateUrl: './input-table.component.html',
@@ -24,6 +32,7 @@ export class ElementProperty {
 export class InputTableComponent implements OnInit {
     @Input() elementKeys: (string | ElementProperty)[] = [];
     @Input() tableKey = '';
+    @Input() actions: Action[] = [];
     @Output() onclickDetail = new EventEmitter<ElementBase>();
 
     elementList: Element[];
@@ -47,7 +56,7 @@ export class InputTableComponent implements OnInit {
             if (elementKey.searchFn) {
                 this.onSearch('', elementKey);
             }
-        })
+        });
     }
 
     initElementList() {

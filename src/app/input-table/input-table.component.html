@@ -17,24 +17,30 @@
                     <input *ngIf="!head.option && !head.searchFn" type="text" nz-input
                         [(ngModel)]="data[head + '_editing']" />
                     <nz-select *ngIf="head.option || head.searchFn" style="width: 120px;"
-                        [(ngModel)]="data[[head.name] + '_editing']" nzAllowClear nzPlaceHolder="Choose"
-                        nzShowSearch [nzServerSearch]="head.searchFn" (nzOnSearch)="onSearch($event, head)">
+                        [(ngModel)]="data[[head.name] + '_editing']" nzAllowClear nzPlaceHolder="Choose" nzShowSearch
+                        [nzServerSearch]="head.searchFn" (nzOnSearch)="onSearch($event, head)">
                         <nz-option *ngFor="let item of head.option" [nzValue]="item[head.filterKey]"
                             [nzLabel]="item[head.filterKey]" [nzDisabled]="item.disabled"></nz-option>
                     </nz-select>
                 </ng-template>
             </td>
             <td>
-                <span *ngIf="data.editing" class="glyphicon glyphicon-ok" aria-hidden="true" title="Save"
+                <span *ngIf="data.editing" class="action-button glyphicon glyphicon-ok" aria-hidden="true" title="Save"
                     (click)="onclickSave(data.id)"></span>
-                <span *ngIf="data.editing" class="glyphicon glyphicon-remove" aria-hidden="true" title="Cancel"
-                    (click)="onclickCancel(data)"></span>
-                <span *ngIf="!data.editing" class="glyphicon glyphicon-pencil" aria-hidden="true" title="Edit"
-                    (click)="onclickEdit(data)"></span>
-                <span *ngIf="!data.editing" class="glyphicon glyphicon-trash" aria-hidden="true" title="Delete"
-                    (click)="onclickDelete(data.id)"></span>
-                <span *ngIf="!data.editing && onclickDetail.observers.length" class="glyphicon glyphicon-list-alt"
-                    aria-hidden="true" title="Detail" (click)="onclickDetailBtn(data)"></span>
+                <span *ngIf="data.editing" class="action-button glyphicon glyphicon-remove" aria-hidden="true"
+                    title="Cancel" (click)="onclickCancel(data)"></span>
+                <span *ngIf="!data.editing" class="action-button glyphicon glyphicon-pencil" aria-hidden="true"
+                    title="Edit" (click)="onclickEdit(data)"></span>
+                <span *ngIf="!data.editing" class="action-button glyphicon glyphicon-trash" aria-hidden="true"
+                    title="Delete" (click)="onclickDelete(data.id)"></span>
+                <span *ngIf="!data.editing && onclickDetail.observers.length"
+                    class="action-button glyphicon glyphicon-list-alt" aria-hidden="true" title="Detail"
+                    (click)="onclickDetailBtn(data)"></span>
+                <ng-container *ngFor="let action of actions">
+                    <span *ngIf="!action.isShow || action.isShow(data)"
+                        [class]="'action-button ' + action.class || action.getClass(data)" aria-hidden="true"
+                        [title]="action.title" (click)="action.click(data)"></span>
+                </ng-container>
             </td>
         </tr>
     </tbody>

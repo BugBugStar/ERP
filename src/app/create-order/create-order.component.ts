@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ElementProperty } from '../input-table/input-table.component';
+import { ElementProperty, Action } from '../input-table/input-table.component';
 import { of } from 'rxjs';
 import { CustomerService } from '../customer.service';
+import { ElementBase } from '../input-table.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-create-order',
@@ -18,8 +20,19 @@ export class CreateOrderComponent implements OnInit {
     }, 'saler', 'sales_notes_no', 'place_date', ];
     // 'product', 'length', 'unit_price', 'amount', 'style_number', 'good_date', 'term'];
     tableKey = 'create_order';
+    actions: Action[] = [{
+        class: 'glyphicon glyphicon-list-alt',
+        title: 'order detail',
+        click: (element: ElementBase) => {
+            this.router.navigate(['order_detail'], {
+                queryParams: {
+                    element,
+                }
+            });
+        },
+    }, ];
 
-    constructor(private customerService: CustomerService) { }
+    constructor(private router: Router, private customerService: CustomerService) { }
 
     ngOnInit() {
     }

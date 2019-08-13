@@ -5,6 +5,7 @@ import { CustomersComponent } from './customers/customers.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
 import { RepositoryComponent } from './repository/repository.component';
 import { SalesSummaryComponent } from './sales-summary/sales-summary.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'create-order', component: CreateOrderComponent },
   { path: 'repository', component: RepositoryComponent },
   { path: 'sales-summary', component: SalesSummaryComponent },
+  { path: 'order_detail', component: OrderDetailComponent },
   { path: '', component: HomeComponent },
 ];
 
