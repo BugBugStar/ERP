@@ -14,6 +14,8 @@ export class ElementProperty {
     filterKey?: string;
     readonly?: boolean;
     disabled?: boolean;
+    primaryKey?: boolean;
+    getValue?: () => string;
 }
 
 export class Action {
@@ -37,16 +39,24 @@ export class InputTableComponent implements OnInit {
 
     elementList: Element[];
     titleHeads: string[];
+    primaryKey: ElementProperty;
 
     constructor(private inputTableService: InputTableService) { }
 
     ngOnInit() {
-        this.initElementList();
-        this.titleHeads = this.elementKeys.map(element => {
-            if (typeof element === 'object') {
-                return element.name;
+        this.initPrimaryKey();
+        this.initElementList(this.primaryKey);
+        this.titleHeads = this.elementKeys.filter(elementKey => {
+            if (typeof elementKey === 'object') {
+                return !elementKey.primaryKey;
             } else {
-                return element;
+                return true;
+            }
+        }).map(elementKey => {
+            if (typeof elementKey === 'object') {
+                return elementKey.name;
+            } else {
+                return elementKey;
             }
         });
         this.elementKeys.forEach(elementKey => {
@@ -56,11 +66,22 @@ export class InputTableComponent implements OnInit {
             if (elementKey.searchFn) {
                 this.onSearch('', elementKey);
             }
+            if (elementKey.primaryKey && elementKey.getValue) {
+                this.elementList.forEach(element => {
+                    element[elementKey.name] = elementKey.getValue();
+                });
+            }
         });
     }
 
-    initElementList() {
-        this.elementList = this.inputTableService.getElementList(this.tableKey);
+    initElementList(primaryKey: ElementProperty) {
+        this.elementList = this.inputTableService.getElementList(this.tableKey)
+            .filter(element => !primaryKey || (primaryKey && element[primaryKey.name] === primaryKey.getValue()));
+    }
+
+    initPrimaryKey() {
+        this.primaryKey = (this.elementKeys.find(elementKey =>
+            typeof elementKey === 'object' && elementKey.primaryKey) as ElementProperty);
     }
 
     addRow(): void {
@@ -77,6 +98,20 @@ export class InputTableComponent implements OnInit {
         element.id = id;
         element.editing = true;
         element.new = true;
+
+        this.elementKeys.forEach(elementKey => {
+            if (typeof elementKey !== 'object') {
+                if (elementKey !== 'id') {
+                    element[elementKey] = '';
+                }
+            } else {
+                if (elementKey.primaryKey) {
+                    element[elementKey.name] = elementKey.getValue();
+                    return;
+                }
+                element[elementKey.name] = '';
+            }
+        });
         return element;
     }
 

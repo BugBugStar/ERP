@@ -18,7 +18,6 @@ export class CreateOrderComponent implements OnInit {
         },
         filterKey: 'name',
     }, 'saler', 'sales_notes_no', 'place_date', ];
-    // 'product', 'length', 'unit_price', 'amount', 'style_number', 'good_date', 'term'];
     tableKey = 'create_order';
     actions: Action[] = [{
         class: 'glyphicon glyphicon-list-alt',

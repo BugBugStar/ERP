@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AppComponent implements OnInit {
     title = 'ERP';
 
-    constructor (private router: Router, private route: ActivatedRoute) {}
+    constructor(private router: Router, private route: ActivatedRoute) {}
 
     ngOnInit() {
         this.router.navigate(['home']);

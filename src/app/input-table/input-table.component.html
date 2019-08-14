@@ -7,23 +7,25 @@
     </thead>
     <tbody>
         <tr *ngFor="let data of basicTable.data">
-            <td *ngFor="let head of elementKeys">
-                <div class="editable-cell" *ngIf="!data.editing || head === 'id'; else editTpl">
-                    <div class="editable-cell-value-wrap">
-                        {{ head.name ? data[head.name] : data[head] }}
+            <ng-container *ngFor="let head of elementKeys">
+                <td *ngIf="!head.primaryKey">
+                    <div class="editable-cell" *ngIf="!data.editing || head === 'id'; else editTpl">
+                        <div class="editable-cell-value-wrap">
+                            {{ head.name ? data[head.name] : data[head] }}
+                        </div>
                     </div>
-                </div>
-                <ng-template #editTpl>
-                    <input *ngIf="!head.option && !head.searchFn" type="text" nz-input
-                        [(ngModel)]="data[head + '_editing']" />
-                    <nz-select *ngIf="head.option || head.searchFn" style="width: 120px;"
-                        [(ngModel)]="data[[head.name] + '_editing']" nzAllowClear nzPlaceHolder="Choose" nzShowSearch
-                        [nzServerSearch]="head.searchFn" (nzOnSearch)="onSearch($event, head)">
-                        <nz-option *ngFor="let item of head.option" [nzValue]="item[head.filterKey]"
-                            [nzLabel]="item[head.filterKey]" [nzDisabled]="item.disabled"></nz-option>
-                    </nz-select>
-                </ng-template>
-            </td>
+                    <ng-template #editTpl>
+                        <input *ngIf="!head.option && !head.searchFn" type="text" nz-input
+                            [(ngModel)]="data[head + '_editing']" />
+                        <nz-select *ngIf="head.option || head.searchFn" style="width: 120px;"
+                            [(ngModel)]="data[[head.name] + '_editing']" nzAllowClear nzPlaceHolder="Choose"
+                            nzShowSearch [nzServerSearch]="head.searchFn" (nzOnSearch)="onSearch($event, head)">
+                            <nz-option *ngFor="let item of head.option" [nzValue]="item[head.filterKey]"
+                                [nzLabel]="item[head.filterKey]" [nzDisabled]="item.disabled"></nz-option>
+                        </nz-select>
+                    </ng-template>
+                </td>
+            </ng-container>
             <td>
                 <span *ngIf="data.editing" class="action-button glyphicon glyphicon-ok" aria-hidden="true" title="Save"
                     (click)="onclickSave(data.id)"></span>
@@ -37,7 +39,7 @@
                     class="action-button glyphicon glyphicon-list-alt" aria-hidden="true" title="Detail"
                     (click)="onclickDetailBtn(data)"></span>
                 <ng-container *ngFor="let action of actions">
-                    <span *ngIf="!action.isShow || action.isShow(data)"
+                    <span *ngIf="!data.editing && (!action.isShow || action.isShow(data))"
                         [class]="'action-button ' + action.class || action.getClass(data)" aria-hidden="true"
                         [title]="action.title" (click)="action.click(data)"></span>
                 </ng-container>
