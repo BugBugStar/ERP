@@ -25,26 +25,19 @@ export class RepositoryService {
             .filter(product => product[productIdKey] === productId)
             .map(product => product.color);
     }
-    // addProduct(customer: Product) {
-    //     this.inputTableService.addElement(REPOSITORY_KEY, customer);
-    // }
 
-    // insertProduct(index, customer: Product) {
-    //     this.inputTableService.insertElement(REPOSITORY_KEY, index, customer);
-    // }
-
-    // deleteProduct(id: number) {
-    //     this.inputTableService.deleteElement(REPOSITORY_KEY, id);
-    // }
-
-    // modifyProduct(id: number, newProduct: Product) {
-    //     this.inputTableService.modifyElement(REPOSITORY_KEY, id, newProduct);
-    // }
+    getProductLength(productIdKey: string, productId: number): string[] {
+        return (this.inputTableService.getElementList(REPOSITORY_DETAIL_KEY) as ProductDetail[])
+            .filter(product => product[productIdKey] === productId)
+            .map(product => product.length);
+    }
 }
 
 export class Product extends ElementBase {
     name: string;
     item_code: string;
+    item_code_editing: string | any;
+    color_editing: string;
 }
 
 export class ProductDetail extends ElementBase {
@@ -53,4 +46,3 @@ export class ProductDetail extends ElementBase {
     length: string;
     unit_price: string;
 }
-// export const productKeys = ['id', 'name', 'item_code', ];

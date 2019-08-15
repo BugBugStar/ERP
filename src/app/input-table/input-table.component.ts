@@ -10,8 +10,12 @@ class Element extends ElementBase {
 export class ElementProperty {
     name?: string;
     option?: string[] | any[];
-    searchFn?: (keyword: string, element: ElementBase) => Observable<any[]>;
+    searchFn?: (keyword: string, element: ElementBase) => Observable<{
+        id: number,
+        option: any,
+    }[]>;
     filterKey?: string;
+    onModelChange?: (itemCode, element: ElementBase) => void;
     readonly?: boolean;
     disabled?: boolean;
     primaryKey?: boolean;
@@ -158,12 +162,15 @@ export class InputTableComponent implements OnInit {
     }
 
     onSearch($event: string, head: ElementProperty, element: ElementBase) {
-        head.searchFn($event, element).subscribe((itemList: any[]) => {
+        head.searchFn($event, element).subscribe(itemList => {
             head.option = itemList;
         });
     }
 
     getOptionValue(item: any, filterKey: string | undefined): string {
-        return filterKey ? item[filterKey] : item;
+        if (typeof item === 'string') {
+            return item;
+        }
+        return filterKey ? item.option[filterKey] : item.option;
     }
 }

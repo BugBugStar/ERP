@@ -14,7 +14,11 @@ export class CreateOrderComponent implements OnInit {
     elementKeys: (string | ElementProperty)[] = ['id', 'name', {
         name: 'customer',
         searchFn: (keyword) => {
-            return of(this.customerService.getCustomers().filter(customer => customer.name.includes(keyword)));
+            return of(this.customerService.getCustomers().filter(customer => customer.name.includes(keyword))
+                .map((customer, index) => ({
+                    id: index,
+                    option: customer,
+                })));
         },
         filterKey: 'name',
     }, 'saler', 'sales_notes_no', 'place_date', ];

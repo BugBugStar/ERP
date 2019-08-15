@@ -11,7 +11,7 @@
                 <td *ngIf="!head.primaryKey">
                     <div class="editable-cell" *ngIf="!data.editing || head === 'id'; else editTpl">
                         <div class="editable-cell-value-wrap">
-                            {{ head.name ? data[head.name] : data[head] }}
+                            {{ head.name ? (head.filterKey ? data[head.name][head.filterKey] : data[head.name]) : data[head] }}
                         </div>
                     </div>
                     <ng-template #editTpl>
@@ -20,9 +20,10 @@
                         <nz-select *ngIf="head.option || head.searchFn" style="width: 120px;"
                             [(ngModel)]="data[[head.name] + '_editing']" nzAllowClear nzPlaceHolder="Choose"
                             nzShowSearch [nzServerSearch]="head.searchFn" (nzOnSearch)="onSearch($event, head, data)"
-                            (nzOpenChange)="onSearch('', head, data)">
+                            (nzOpenChange)="onSearch('', head, data)"
+                            (ngModelChange)="head.onModelChange ? head.onModelChange($event, data) : ''"> 
                             <nz-option *ngFor="let item of head.option"
-                                [nzValue]="getOptionValue(item, head.filterKey)"
+                                [nzValue]="item.option? item.option : item"
                                 [nzLabel]="getOptionValue(item, head.filterKey)" [nzDisabled]="item.disabled"></nz-option>
                         </nz-select>
                     </ng-template>
