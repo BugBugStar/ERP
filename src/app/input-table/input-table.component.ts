@@ -10,7 +10,7 @@ class Element extends ElementBase {
 export class ElementProperty {
     name?: string;
     option?: string[] | any[];
-    searchFn?: (keyword: string) => Observable<any[]>;
+    searchFn?: (keyword: string, element: ElementBase) => Observable<any[]>;
     filterKey?: string;
     readonly?: boolean;
     disabled?: boolean;
@@ -64,7 +64,7 @@ export class InputTableComponent implements OnInit {
                 return;
             }
             if (elementKey.searchFn) {
-                this.onSearch('', elementKey);
+                this.onSearch('', elementKey, null);
             }
             if (elementKey.primaryKey && elementKey.getValue) {
                 this.elementList.forEach(element => {
@@ -157,9 +157,13 @@ export class InputTableComponent implements OnInit {
         this.onclickDetail.emit(element);
     }
 
-    onSearch($event: string, head: ElementProperty) {
-        head.searchFn($event).subscribe((itemList: any[]) => {
+    onSearch($event: string, head: ElementProperty, element: ElementBase) {
+        head.searchFn($event, element).subscribe((itemList: any[]) => {
             head.option = itemList;
         });
+    }
+
+    getOptionValue(item: any, filterKey: string | undefined): string {
+        return filterKey ? item[filterKey] : item;
     }
 }
