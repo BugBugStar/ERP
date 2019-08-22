@@ -16,16 +16,22 @@
                     </div>
                     <ng-template #editTpl>
                         <input *ngIf="!head.option && !head.searchFn" type="text" nz-input
-                            [(ngModel)]="data[head + '_editing']" />
+                            [(ngModel)]="head.name ? data[head.name + '_editing'] : data[head + '_editing']"
+                            [readonly]="head.readonly"
+                            (ngModelChange)="head.onModelChange ? head.onModelChange($event, data) : ''" />
                         <nz-select *ngIf="head.option || head.searchFn" style="width: 120px;"
-                            [(ngModel)]="data[[head.name] + '_editing']" nzAllowClear nzPlaceHolder="Choose"
-                            nzShowSearch [nzServerSearch]="head.searchFn" (nzOnSearch)="onSearch($event, head, data)"
-                            (nzOpenChange)="onSearch('', head, data)"
-                            (ngModelChange)="head.onModelChange ? head.onModelChange($event, data) : ''"> 
-                            <nz-option *ngFor="let item of head.option"
-                                [nzValue]="item.option? item.option : item"
-                                [nzLabel]="getOptionValue(item, head.filterKey)" [nzDisabled]="item.disabled"></nz-option>
+                            [(ngModel)]="data[head.name + '_editing']" nzAllowClear nzPlaceHolder="Choose" nzShowSearch
+                            [nzServerSearch]="head.searchFn" [compareWith]="head.compareWith"
+                            (nzOnSearch)="onSearch($event, head, data)" (nzOpenChange)="onSearch('', head, data)"
+                            (ngModelChange)="head.onModelChange ? head.onModelChange($event, data) : ''"
+                            [nzCustomTemplate]="custom">
+                            <nz-option *ngFor="let item of head.option" [nzValue]="item.option? item.option : item"
+                                [nzLabel]="getOptionValue(item, head.filterKey)" [nzDisabled]="item.disabled">
+                            </nz-option>
                         </nz-select>
+                        <ng-template #custom let-selected>
+                            <span>{{ selected.nzLabel }}</span>
+                        </ng-template>
                     </ng-template>
                 </td>
             </ng-container>

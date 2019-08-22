@@ -19,7 +19,8 @@ export class ElementProperty {
     readonly?: boolean;
     disabled?: boolean;
     primaryKey?: boolean;
-    getValue?: () => string;
+    getValue?: () => string; // when the element is primaryKey, it would get value from getValue()
+    compareWith?: (o1: any, o2: any) => boolean;
 }
 
 export class Action {
@@ -75,6 +76,16 @@ export class InputTableComponent implements OnInit {
                     element[elementKey.name] = elementKey.getValue();
                 });
             }
+            elementKey.compareWith = (o1: any, o2: any) => {
+                if (elementKey.option && elementKey.option.length > 0) {
+                    if (typeof elementKey.option[0] === 'string') {
+                        return o1 === o2;
+                    } else {
+                        return o1 && o2 && o1[elementKey.filterKey] === o2[elementKey.filterKey];
+                    }
+                }
+                return false;
+            };
         });
     }
 
@@ -143,6 +154,11 @@ export class InputTableComponent implements OnInit {
         for (const property of this.elementKeys) {
             const key = typeof property === 'object' ? property.name : property;
             element[key + editingMark] = element[key];
+            if (typeof property !== 'string') {
+                if (property.searchFn) {
+                    property.searchFn('', null);
+                }
+            }
         }
     }
 
