@@ -38,10 +38,13 @@ export class Product extends ElementBase {
     item_code: string;
     item_code_editing: string | any;
     color_editing: string;
+    amount_editing: string;
+    quantity_editing: string;
+    unit_price_editing: string;
 }
 
 export class ProductDetail extends ElementBase {
-    product_id: number
+    product_id: number;
     color: string;
     length: string;
     unit_price: string;

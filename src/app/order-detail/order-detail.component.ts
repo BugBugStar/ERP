@@ -48,7 +48,23 @@ export class OrderDetailComponent implements OnInit {
                     option: color,
                 })));
         },
-    }, 'quantity', 'unit_price', 'amount', 'style_number', 'good_date', ];
+    }, {
+        name: 'quantity',
+        onModelChange: (value, product: Product) => {
+            product.quantity_editing = value;
+            product.amount_editing = (Number(product.quantity_editing) * Number(product.unit_price_editing)).toString();
+        },
+    }, {
+        name: 'unit_price',
+        onModelChange: (value, product: Product) => {
+            product.unit_price_editing = value;
+            product.amount_editing = (Number(product.quantity_editing) * Number(product.unit_price_editing)).toString();
+        },
+    }, {
+        name: 'amount',
+        readonly: true,
+
+    }, 'style_number', 'good_date', ];
     tableKey = 'order_detail';
 
     constructor(private repositoryService: RepositoryService) { }
