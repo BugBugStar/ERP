@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { CustomerService } from '../customer.service';
 import { ElementBase } from '../input-table.service';
 import { Router } from '@angular/router';
+import { LocalStorageService } from '../local-storage.service';
 
 @Component({
     selector: 'app-create-order',
@@ -21,21 +22,22 @@ export class CreateOrderComponent implements OnInit {
                 })));
         },
         filterKey: 'name',
-    }, 'saler', 'sales_notes_no', 'place_date', ];
+    }, 'saler', 'sales_notes_no', 'place_date'];
     tableKey = 'create_order';
     actions: Action[] = [{
         class: 'glyphicon glyphicon-list-alt',
         title: 'order detail',
         click: (element: ElementBase) => {
-            this.router.navigate(['order_detail'], {
-                queryParams: {
-                    element,
-                }
-            });
+            this.localStorageService.setObject('route_params', { element });
+            this.router.navigate(['order_detail']);
         },
-    }, ];
+    }];
 
-    constructor(private router: Router, private customerService: CustomerService) { }
+    constructor(
+        private router: Router,
+        private customerService: CustomerService,
+        private localStorageService: LocalStorageService,
+    ) { }
 
     ngOnInit() {
     }

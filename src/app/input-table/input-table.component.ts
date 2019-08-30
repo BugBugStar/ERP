@@ -38,7 +38,7 @@ export class Action {
 })
 export class InputTableComponent implements OnInit {
     @Input() elementKeys: (string | ElementProperty)[] = [];
-    @Input() tableKey = '';
+    @Input() tableKey: string | string[] = '';
     @Input() actions: Action[] = [];
     @Output() onclickDetail = new EventEmitter<ElementBase>();
 
@@ -133,11 +133,12 @@ export class InputTableComponent implements OnInit {
     onclickSave(id: number) {
         const elementIndex = this.elementList.findIndex(e => e.id === id);
         const element = this.elementList[elementIndex];
-        element.editing = false;
+        delete element.editing;
         for (const key of Object.keys(element)) {
             if (key.includes(editingMark)) {
                 const originKey = key.split(editingMark)[0];
                 element[originKey] = element[key];
+                delete element[key];
             }
         }
 

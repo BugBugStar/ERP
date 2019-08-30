@@ -8,38 +8,99 @@ export class InputTableService {
 
     constructor(private localStorageService: LocalStorageService) { }
 
-    getElementList(tableKey: string): ElementBase[] {
-        let valueList = this.localStorageService.getObject(tableKey);
+    getElementList(tableKey: string | string[]): ElementBase[] {
+        let valueList;
+        if (typeof tableKey === 'string') {
+            valueList = this.localStorageService.getObject(tableKey);
+        } else {
+            if (tableKey.length === 0) {
+                return [];
+            }
+            valueList = this.localStorageService.getObject(tableKey[0]);
+            if (!valueList) {
+                return [];
+            }
+            for (let i = 1; i < tableKey.length; i++) {
+                valueList = valueList[tableKey[i]];
+                if (!valueList) {
+                    return [];
+                }
+            }
+        }
         if (!valueList) {
             valueList = [];
         }
         return valueList;
     }
 
-    addElement(tableKey: string, element: ElementBase) {
-        const elementList = this.getElementList(tableKey);
-        elementList.push(element);
-        this.localStorageService.setObject(tableKey, elementList);
+    addElement(tableKey: string | string[], element: ElementBase): void {
+        if (typeof tableKey === 'string') {
+            const elementList = this.getElementList(tableKey);
+            elementList.push(element);
+            this.localStorageService.setObject(tableKey, elementList);
+        } else {
+            if (tableKey.length === 0) {
+                return;
+            }
+            const value = this.localStorageService.getObject(tableKey[0]);
+            let elementList = { ...value };
+            for (let i = 1; i < tableKey.length; i++) {
+                elementList = elementList[i];
+                if (!elementList) {
+                    return;
+                }
+            }
+            elementList.push(element);
+            this.localStorageService.setObject(tableKey[0], value);
+        }
     }
 
-    insertElement(tableKey: string, index, element: ElementBase) {
-        const elementList = this.getElementList(tableKey);
-        elementList.splice(index, 0, element);
-        this.localStorageService.setObject(tableKey, elementList);
+    insertElement(tableKey: string | string[], index, element: ElementBase) {
+        this.doSomethingToElementList(tableKey, (elementList) => {
+            elementList.splice(index, 0, element);
+        });
     }
 
-    deleteElement(tableKey: string, id: number) {
-        const elementList = this.getElementList(tableKey);
-        const elementIndex = elementList.findIndex(element => element.id === id);
-        elementList.splice(elementIndex, 1);
-        this.localStorageService.setObject(tableKey, elementList);
+    deleteElement(tableKey: string | string[], id: number) {
+        this.doSomethingToElementList(tableKey, (elementList) => {
+            const elementIndex = elementList.findIndex(element => element.id === id);
+            elementList.splice(elementIndex, 1);
+        });
     }
 
-    modifyElement(tableKey: string, id: number, newElement: ElementBase) {
-        const elementList = this.getElementList(tableKey);
-        const elementIndex = elementList.findIndex(element => element.id === id);
-        elementList[elementIndex] = newElement;
-        this.localStorageService.setObject(tableKey, elementList);
+    modifyElement(tableKey: string | string[], id: number, newElement: ElementBase) {
+        this.doSomethingToElementList(tableKey, (elementList) => {
+            const elementIndex = elementList.findIndex(element => element.id === id);
+            elementList[elementIndex] = newElement;
+        });
+    }
+
+    doSomethingToElementList(tableKey: string | string[], callback: (elementList: ElementBase[]) => void) {
+        if (typeof tableKey === 'string') {
+            const elementList = this.getElementList(tableKey);
+            callback(elementList);
+            this.localStorageService.setObject(tableKey, elementList);
+        } else {
+            if (tableKey.length === 0) {
+                return;
+            }
+            let value = this.localStorageService.getObject(tableKey[0]);
+            if (!value) {
+                value = {};
+            }
+            let elementList = value;
+            for (let i = 1; i < tableKey.length; i++) {
+                let newElementList = elementList[tableKey[i]];
+                if (!newElementList) {
+                    elementList[tableKey[i]] = [];
+                    newElementList = elementList[tableKey[i]];
+                    // return;
+                }
+                elementList = newElementList;
+            }
+            callback(elementList);
+            this.localStorageService.setObject(tableKey[0], value);
+        }
     }
 }
 
@@ -48,4 +109,4 @@ export class ElementBase {
     name: string;
 }
 
-export const elementKeys = ['id', 'name', ];
+export const elementKeys = ['id'];
