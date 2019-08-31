@@ -3,6 +3,7 @@ import { ElementProperty } from '../input-table/input-table.component';
 import { of } from 'rxjs';
 import { RepositoryService, Product } from '../repository.service';
 import { LocalStorageService } from '../local-storage.service';
+import { CustomerBase } from '../customer.service';
 
 @Component({
     selector: 'app-order-detail',
@@ -74,14 +75,27 @@ export class OrderDetailComponent implements OnInit {
 
         }, 'style_number', 'good_date'];
     tableKey = ['order_detail'];
+    customer: CustomerBase;
+    saler: string;
+    salesNotesNum: string;
+    placeDate: string;
 
     constructor(
         private repositoryService: RepositoryService,
         private localStorageService: LocalStorageService) { }
 
     ngOnInit() {
-        const { element } = this.localStorageService.getObject('route_params');
+        const { element, element: {
+            customer,
+            saler,
+            sales_notes_no,
+            place_date
+        } } = this.localStorageService.getObject('route_params');
         this.tableKey.push(element.id);
+        this.customer = customer;
+        this.saler = saler;
+        this.salesNotesNum = sales_notes_no;
+        this.placeDate = place_date;
     }
 
 }

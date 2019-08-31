@@ -1,1 +1,64 @@
-<app-input-table [elementKeys]='elementKeys' [tableKey]='tableKey'></app-input-table>
+<div class="order-detail-panel">
+    <div>
+        <img class="logo">
+        <h1 class="title">SALES NOTE</h1>
+    </div>
+    <div>
+        <h2>YKK项链</h2>
+    </div>
+    <div class="fr">
+        <span class="sales-list">销售清单</span>
+        <span class="contract-num-head">合同号：</span>
+        <span>{{ contractNum }}</span>
+    </div>
+    <div>
+        地址: {{address}}
+    </div>
+    <div class="detail-table">
+        <div class="">
+            <span>
+                <div class="telephone">电话: {{ tel }}</div>
+                <div>营业负责人:{{ saler }}</div>
+            </span>
+            <span>
+                <div>Sales Notes No. 销售记录</div>
+                <div>{{ salesNotesNum }}</div>
+            </span>
+            <span>
+                <div>Place&Date 日期</div>
+                <div>{{ placeDate }}</div>
+            </span>
+        </div>
+        <div>
+            <span>
+                <div>Messrs. 购买方</div>
+                <div>{{ customer?.company }}</div>;
+            </span>
+            <span>
+                <div>Contract Customer 收件人</div>
+                <div>{{ customer?.name }}</div>
+            </span>
+            <span>
+                <div>Fat 传真号码</div>
+                <div>{{ fat }}</div>
+            </span>
+        </div>
+        <div>
+            <span>
+                <div>Dellvery To 发货到</div>
+                <div>{{ customer?.address }}</div>
+            </span>
+            <span>
+                <div>客户款号 :</div>
+                <div class="style-num">{{ styleNum }}</div>
+                <div>Term/Method of Payment 付款方式</div>
+                <div>{{ term }}</div>
+            </span>
+            <span>
+                <div></div>
+                <div class="style-num"></div>
+            </span>
+        </div>
+    </div>
+    <app-input-table [elementKeys]='elementKeys' [tableKey]='tableKey'></app-input-table>
+</div>

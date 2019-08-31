@@ -1,0 +1,53 @@
+.order-detail-panel {
+    max-width: 1000px;
+    width: 100%;
+    max-height: 1414px;
+    height: 100%;
+}
+
+.title {
+    text-align: center;
+}
+
+.fr {
+    float: right;
+}
+
+.sales-list {
+    margin-right: 20px;
+}
+
+.contract-num-head {
+    margin-right: 20px;
+}
+
+.detail-table {
+    border: 1px solid #666666;
+}
+
+.detail-table>div {
+    display: grid;
+    grid: auto / 30% 35% 35%;
+}
+
+.detail-table>div:not(:last-child) {
+    border-bottom: 1px solid #666666;
+}
+
+.detail-table>div>span {
+    display: inline-block;
+    max-width: 400px;
+}
+
+.detail-table>div>span:first-child {
+    max-width: 300px;
+    border-right: 1px solid #666666;
+}
+
+.detail-table>div>span>div {
+    height: 24px;
+}
+
+.telephone, .style-num {
+    border-bottom: 1px solid #666666;
+}

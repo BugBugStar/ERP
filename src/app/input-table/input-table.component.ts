@@ -157,7 +157,7 @@ export class InputTableComponent implements OnInit {
             element[key + editingMark] = element[key];
             if (typeof property !== 'string') {
                 if (property.searchFn) {
-                    property.searchFn('', null);
+                    property.searchFn('', element);
                 }
             }
         }
