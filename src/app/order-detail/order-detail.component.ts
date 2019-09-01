@@ -15,6 +15,8 @@ export class OrderDetailComponent implements OnInit {
         'id',
         {
             name: 'item_code',
+            englishName: 'ITEM CODE',
+            chineseName: '产品代码',
             searchFn: (keyword) => {
                 return of(this.repositoryService.getProducts().filter(product => product.item_code.includes(keyword))
                     .map((product, index) => ({
@@ -29,6 +31,8 @@ export class OrderDetailComponent implements OnInit {
         },
         {
             name: 'color',
+            englishName: 'color',
+            chineseName: '颜色',
             searchFn: (keyword, product?: Product) => {
                 if (!product) {
                     return of([]);
@@ -43,6 +47,8 @@ export class OrderDetailComponent implements OnInit {
         },
         {
             name: 'length',
+            englishName: 'LENGTH',
+            chineseName: '长度',
             searchFn: (keyword, product?: Product) => {
                 if (!product) {
                     return of([]);
@@ -57,6 +63,8 @@ export class OrderDetailComponent implements OnInit {
         },
         {
             name: 'quantity',
+            englishName: 'QUANTITY',
+            chineseName: '数量（米/条/个）',
             onModelChange: (value, product: Product) => {
                 product.quantity_editing = value;
                 product.amount_editing = (Number(product.quantity_editing) * Number(product.unit_price_editing)).toString();
@@ -64,6 +72,8 @@ export class OrderDetailComponent implements OnInit {
         },
         {
             name: 'unit_price',
+            englishName: 'UNIT PRICE',
+            chineseName: '单价（元）',
             onModelChange: (value, product: Product) => {
                 product.unit_price_editing = value;
                 product.amount_editing = (Number(product.quantity_editing) * Number(product.unit_price_editing)).toString();
@@ -71,14 +81,29 @@ export class OrderDetailComponent implements OnInit {
         },
         {
             name: 'amount',
+            englishName: 'AMOUNT',
+            chineseName: '合计（元）',
             readonly: true,
 
-        }, 'style_number', 'good_date'];
+        },
+        {
+            name: 'style_number',
+            englishName: '',
+            chineseName: '货期',
+        },
+        {
+            name: 'good_date',
+            englishName: '',
+            chineseName: '款号',
+        },
+    ];
     tableKey = ['order_detail'];
     customer: CustomerBase;
     saler: string;
     salesNotesNum: string;
     placeDate: string;
+
+    preview = false;
 
     constructor(
         private repositoryService: RepositoryService,

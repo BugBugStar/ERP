@@ -22,7 +22,7 @@ export class CreateOrderComponent implements OnInit {
                 })));
         },
         filterKey: 'name',
-    }, 'saler', 'sales_notes_no', 'place_date'];
+    }, 'saler', 'sales_notes_no', 'place_date', 'term'];
     tableKey = 'create_order';
     actions: Action[] = [{
         class: 'glyphicon glyphicon-list-alt',

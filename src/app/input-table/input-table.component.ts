@@ -9,6 +9,8 @@ class Element extends ElementBase {
 }
 export class ElementProperty {
     name?: string;
+    englishName?: string;
+    chineseName?: string;
     option?: string[] | any[];
     searchFn?: (keyword: string, element: ElementBase) => Observable<{
         id: number,
@@ -43,7 +45,7 @@ export class InputTableComponent implements OnInit {
     @Output() onclickDetail = new EventEmitter<ElementBase>();
 
     elementList: Element[];
-    titleHeads: string[];
+    titleHeads: (string | {chineseName: string, englishName: string})[];
     primaryKey: ElementProperty;
 
     constructor(private inputTableService: InputTableService) { }
@@ -59,7 +61,10 @@ export class InputTableComponent implements OnInit {
             }
         }).map(elementKey => {
             if (typeof elementKey === 'object') {
-                return elementKey.name;
+                return elementKey.englishName || elementKey.chineseName ? {
+                    englishName: elementKey.englishName ? elementKey.englishName : '',
+                    chineseName: elementKey.chineseName ? elementKey.chineseName : '',
+                } : elementKey.name;
             } else {
                 return elementKey;
             }

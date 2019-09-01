@@ -1,6 +1,6 @@
 <div class="order-detail-panel">
     <div>
-        <img class="logo">
+        <img class="logo" src="src/assets/img/ykk_logo.png">
         <h1 class="title">SALES NOTE</h1>
     </div>
     <div>
@@ -32,15 +32,15 @@
         <div>
             <span>
                 <div>Messrs. 购买方</div>
-                <div>{{ customer?.company }}</div>;
+                <div class="company">{{ customer?.company }}</div>;
             </span>
             <span>
                 <div>Contract Customer 收件人</div>
                 <div>{{ customer?.name }}</div>
             </span>
             <span>
-                <div>Fat 传真号码</div>
-                <div>{{ fat }}</div>
+                <div>Fax 传真号码</div>
+                <div>{{ customer?.fax }}</div>
             </span>
         </div>
         <div>
@@ -60,5 +60,7 @@
             </span>
         </div>
     </div>
-    <app-input-table [elementKeys]='elementKeys' [tableKey]='tableKey'></app-input-table>
+    <app-input-table *ngIf="!preview" [elementKeys]='elementKeys' [tableKey]='tableKey'></app-input-table>
+    <div *ngIf="preview"></div>
 </div>
+<button (click)="preview = !preview;">打印预览</button>

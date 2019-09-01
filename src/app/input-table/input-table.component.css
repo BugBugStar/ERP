@@ -2,3 +2,7 @@
     cursor: pointer;
     margin-right: 5px;
 }
+
+.english-head, .chinese-head {
+    height: 24px;
+}

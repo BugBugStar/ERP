@@ -1,7 +1,13 @@
 <nz-table #basicTable [nzData]="elementList">
     <thead>
         <tr>
-            <th *ngFor="let head of titleHeads">{{ head }}</th>
+            <th *ngFor="let head of titleHeads">
+                <ng-container *ngIf="head.englishName || head.chineseName">
+                    <div class="english-head">{{ head.englishName }}</div>
+                    <div class="chinese-head">{{ head.chineseName }}</div>
+                </ng-container>
+                <span *ngIf="!head.englishName && !head.chineseName">{{ head }}</span>
+            </th>
             <th>Action</th>
         </tr>
     </thead>
