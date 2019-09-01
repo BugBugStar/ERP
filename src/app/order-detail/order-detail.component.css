@@ -4,16 +4,17 @@
     max-height: 1414px;
 }
 
+.logo {
+    height: 50px;
+    position: absolute;
+}
+
 .title {
     text-align: center;
 }
 
 .fr {
     float: right;
-}
-
-.sales-list {
-    margin-right: 20px;
 }
 
 .contract-num-head {
