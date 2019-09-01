@@ -12,7 +12,12 @@ import { CustomerBase } from '../customer.service';
 })
 export class OrderDetailComponent implements OnInit {
     elementKeys: (string | ElementProperty)[] = [
-        'id',
+        {
+            name: 'id',
+            isHidden: () => {
+                return this.preview;
+            }
+        },
         {
             name: 'item_code',
             englishName: 'ITEM CODE',
@@ -89,12 +94,12 @@ export class OrderDetailComponent implements OnInit {
         {
             name: 'style_number',
             englishName: '',
-            chineseName: '货期',
+            chineseName: '款号',
         },
         {
             name: 'good_date',
             englishName: '',
-            chineseName: '款号',
+            chineseName: '货期',
         },
     ];
     tableKey = ['order_detail'];

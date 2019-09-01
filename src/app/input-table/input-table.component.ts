@@ -23,6 +23,8 @@ export class ElementProperty {
     primaryKey?: boolean;
     getValue?: () => string; // when the element is primaryKey, it would get value from getValue()
     compareWith?: (o1: any, o2: any) => boolean;
+    hidden?: boolean;
+    isHidden?: () => boolean;
 }
 
 export class Action {
@@ -42,10 +44,15 @@ export class InputTableComponent implements OnInit {
     @Input() elementKeys: (string | ElementProperty)[] = [];
     @Input() tableKey: string | string[] = '';
     @Input() actions: Action[] = [];
+    @Input() preview = false;
     @Output() onclickDetail = new EventEmitter<ElementBase>();
 
     elementList: Element[];
-    titleHeads: (string | {chineseName: string, englishName: string})[];
+    titleHeads: (string | {
+        name: string | { chineseName: string, englishName: string },
+        hidden: boolean,
+        isHidden: () => boolean,
+    })[];
     primaryKey: ElementProperty;
 
     constructor(private inputTableService: InputTableService) { }
@@ -61,10 +68,14 @@ export class InputTableComponent implements OnInit {
             }
         }).map(elementKey => {
             if (typeof elementKey === 'object') {
-                return elementKey.englishName || elementKey.chineseName ? {
-                    englishName: elementKey.englishName ? elementKey.englishName : '',
-                    chineseName: elementKey.chineseName ? elementKey.chineseName : '',
-                } : elementKey.name;
+                return {
+                    name: elementKey.englishName || elementKey.chineseName ? {
+                        englishName: elementKey.englishName ? elementKey.englishName : '',
+                        chineseName: elementKey.chineseName ? elementKey.chineseName : '',
+                    } : elementKey.name,
+                    hidden: elementKey.hidden,
+                    isHidden: elementKey.isHidden,
+                };
             } else {
                 return elementKey;
             }

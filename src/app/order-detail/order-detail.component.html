@@ -60,7 +60,7 @@
             </span>
         </div>
     </div>
-    <app-input-table *ngIf="!preview" [elementKeys]='elementKeys' [tableKey]='tableKey'></app-input-table>
-    <div *ngIf="preview"></div>
+    <app-input-table [elementKeys]='elementKeys' [tableKey]='tableKey' [preview]=preview>
+    </app-input-table>
 </div>
-<button (click)="preview = !preview;">打印预览</button>
+<button *ngIf="!preview" (click)="preview = !preview;">打印预览</button>

@@ -1,20 +1,27 @@
 <nz-table #basicTable [nzData]="elementList">
     <thead>
         <tr>
-            <th *ngFor="let head of titleHeads">
-                <ng-container *ngIf="head.englishName || head.chineseName">
-                    <div class="english-head">{{ head.englishName }}</div>
-                    <div class="chinese-head">{{ head.chineseName }}</div>
-                </ng-container>
-                <span *ngIf="!head.englishName && !head.chineseName">{{ head }}</span>
-            </th>
-            <th>Action</th>
+            <ng-container *ngFor="let head of titleHeads">
+                <th *ngIf="!head.hidden && !(head.isHidden && head.isHidden())">
+                    <ng-container *ngIf="head.name">
+                        <!-- <ng-container *ngIf="!head.hidden && !(head.isHidden && !head.isHidden())"> -->
+                            <ng-container *ngIf="head.name?.englishName || head.name?.chineseName">
+                                <div class="english-head">{{ head.name.englishName }}</div>
+                                <div class="chinese-head">{{ head.name.chineseName }}</div>
+                            </ng-container>
+                            <span *ngIf="!head.name?.englishName && !head.name?.chineseName">{{ head.name }}</span>
+                        <!-- </ng-container> -->
+                    </ng-container>
+                    <span *ngIf="!head.name">{{ head }}</span>
+                </th>
+            </ng-container>
+            <th *ngIf="!preview">Action</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let data of basicTable.data">
             <ng-container *ngFor="let head of elementKeys">
-                <td *ngIf="!head.primaryKey">
+                <td *ngIf="!head.primaryKey && !head.hidden && !(head.isHidden && head.isHidden())">
                     <div class="editable-cell" *ngIf="!data.editing || head === 'id'; else editTpl">
                         <div class="editable-cell-value-wrap">
                             {{ head.name ? (head.filterKey ? data[head.name][head.filterKey] : data[head.name]) : data[head] }}
@@ -41,7 +48,7 @@
                     </ng-template>
                 </td>
             </ng-container>
-            <td>
+            <td *ngIf="!preview">
                 <span *ngIf="data.editing" class="action-button glyphicon glyphicon-ok" aria-hidden="true" title="Save"
                     (click)="onclickSave(data.id)"></span>
                 <span *ngIf="data.editing" class="action-button glyphicon glyphicon-remove" aria-hidden="true"
@@ -62,4 +69,4 @@
         </tr>
     </tbody>
 </nz-table>
-<button (click)="addRow()">Add</button>
+<button *ngIf="!preview" (click)="addRow()">Add</button>
