@@ -14,9 +14,7 @@ export class OrderDetailComponent implements OnInit {
     elementKeys: (string | ElementProperty)[] = [
         {
             name: 'id',
-            isHidden: () => {
-                return this.preview;
-            }
+            hidden: true,
         },
         {
             name: 'item_code',
@@ -38,33 +36,11 @@ export class OrderDetailComponent implements OnInit {
             name: 'color',
             englishName: 'color',
             chineseName: '颜色',
-            searchFn: (keyword, product?: Product) => {
-                if (!product) {
-                    return of([]);
-                }
-                return of(this.repositoryService.getProductColor('product_id', product.item_code_editing.id)
-                    .filter(color => color.includes(keyword))
-                    .map((color, index) => ({
-                        id: index,
-                        option: color,
-                    })));
-            },
         },
         {
             name: 'length',
             englishName: 'LENGTH',
             chineseName: '长度',
-            searchFn: (keyword, product?: Product) => {
-                if (!product) {
-                    return of([]);
-                }
-                return of(this.repositoryService.getProductLength('product_id', product.item_code_editing.id)
-                    .filter(color => color.includes(keyword))
-                    .map((color, index) => ({
-                        id: index,
-                        option: color,
-                    })));
-            },
         },
         {
             name: 'quantity',

@@ -140,7 +140,9 @@ export class InputTableComponent implements OnInit {
                     element[elementKey.name] = elementKey.getValue();
                     return;
                 }
-                element[elementKey.name] = '';
+                if (elementKey.name !== 'id') {
+                    element[elementKey.name] = '';
+                }
             }
         });
         return element;
@@ -205,5 +207,17 @@ export class InputTableComponent implements OnInit {
             return item;
         }
         return filterKey ? item.option[filterKey] : item.option;
+    }
+
+    onModelChange($event, head, data) {
+        if (head.onModelChange) {
+            head.onModelChange($event, data);
+        } else {
+            if (head.name) {
+                data[head.name + '_editing'] = $event;
+            } else {
+                data[head + '_editing'] = $event;
+            }
+        }
     }
 }

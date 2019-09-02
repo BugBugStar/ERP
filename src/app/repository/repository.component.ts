@@ -9,19 +9,25 @@ import { Action } from '../input-table/input-table.component';
     styleUrls: ['./repository.component.css']
 })
 export class RepositoryComponent implements OnInit {
-    elementKeys = ['id', 'name', 'item_code', ];
+    elementKeys = [
+        {
+            name: 'id',
+            hidden: true,
+        }, 'item_code'];
     tableKey = 'repository';
-    actions: Action[] = [{
-        class: 'glyphicon glyphicon-list-alt',
-        title: 'repository detail',
-        click: (element: ElementBase) => {
-            this.router.navigate(['repository_detail'], {
-                queryParams: {
-                    element: JSON.stringify(element),
-                }
-            });
+    actions: Action[] = [
+        {
+            class: 'glyphicon glyphicon-list-alt',
+            title: 'repository detail',
+            click: (element: ElementBase) => {
+                this.router.navigate(['repository_detail'], {
+                    queryParams: {
+                        element: JSON.stringify(element),
+                    }
+                });
+            },
         },
-    }, ];
+    ];
 
     constructor(private router: Router) { }
 

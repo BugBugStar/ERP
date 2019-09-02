@@ -12,17 +12,22 @@ import { LocalStorageService } from '../local-storage.service';
     styleUrls: ['./create-order.component.css']
 })
 export class CreateOrderComponent implements OnInit {
-    elementKeys: (string | ElementProperty)[] = ['id', 'name', {
-        name: 'customer',
-        searchFn: (keyword) => {
-            return of(this.customerService.getCustomers().filter(customer => customer.name.includes(keyword))
-                .map((customer, index) => ({
-                    id: index,
-                    option: customer,
-                })));
+    elementKeys: (string | ElementProperty)[] = [
+        {
+            name: 'id',
+            hidden: true,
         },
-        filterKey: 'name',
-    }, 'saler', 'sales_notes_no', 'place_date', 'term'];
+        {
+            name: 'customer',
+            searchFn: (keyword) => {
+                return of(this.customerService.getCustomers().filter(customer => customer.name.includes(keyword))
+                    .map((customer, index) => ({
+                        id: index,
+                        option: customer,
+                    })));
+            },
+            filterKey: 'name',
+        }, 'saler', 'sales_notes_no', 'place_date', 'term'];
     tableKey = 'create_order';
     actions: Action[] = [{
         class: 'glyphicon glyphicon-list-alt',

@@ -4,13 +4,11 @@
             <ng-container *ngFor="let head of titleHeads">
                 <th *ngIf="!head.hidden && !(head.isHidden && head.isHidden())">
                     <ng-container *ngIf="head.name">
-                        <!-- <ng-container *ngIf="!head.hidden && !(head.isHidden && !head.isHidden())"> -->
-                            <ng-container *ngIf="head.name?.englishName || head.name?.chineseName">
-                                <div class="english-head">{{ head.name.englishName }}</div>
-                                <div class="chinese-head">{{ head.name.chineseName }}</div>
-                            </ng-container>
-                            <span *ngIf="!head.name?.englishName && !head.name?.chineseName">{{ head.name }}</span>
-                        <!-- </ng-container> -->
+                        <ng-container *ngIf="head.name?.englishName || head.name?.chineseName">
+                            <div class="english-head">{{ head.name.englishName }}</div>
+                            <div class="chinese-head">{{ head.name.chineseName }}</div>
+                        </ng-container>
+                        <span *ngIf="!head.name?.englishName && !head.name?.chineseName">{{ head.name }}</span>
                     </ng-container>
                     <span *ngIf="!head.name">{{ head }}</span>
                 </th>
@@ -22,7 +20,8 @@
         <tr *ngFor="let data of basicTable.data">
             <ng-container *ngFor="let head of elementKeys">
                 <td *ngIf="!head.primaryKey && !head.hidden && !(head.isHidden && head.isHidden())">
-                    <div class="editable-cell" *ngIf="!data.editing || head === 'id'; else editTpl">
+                    <div class="editable-cell"
+                        *ngIf="!data.editing || head === 'id' || head.name === 'id'; else editTpl">
                         <div class="editable-cell-value-wrap">
                             {{ head.name ? (head.filterKey ? data[head.name][head.filterKey] : data[head.name]) : data[head] }}
                         </div>
@@ -31,7 +30,7 @@
                         <input *ngIf="!head.option && !head.searchFn" type="text" nz-input
                             [(ngModel)]="head.name ? data[head.name + '_editing'] : data[head + '_editing']"
                             [readonly]="head.readonly"
-                            (ngModelChange)="head.onModelChange ? head.onModelChange($event, data) : ''" />
+                            (ngModelChange)="onModelChange($event, head, data)"/>
                         <nz-select *ngIf="head.option || head.searchFn" style="width: 120px;"
                             [(ngModel)]="data[head.name + '_editing']" nzAllowClear nzPlaceHolder="Choose" nzShowSearch
                             [nzServerSearch]="head.searchFn" [compareWith]="head.compareWith"
