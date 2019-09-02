@@ -27,7 +27,22 @@ export class CreateOrderComponent implements OnInit {
                     })));
             },
             filterKey: 'name',
-        }, 'saler', 'sales_notes_no', 'place_date', 'term'];
+        }, 'saler', 'sales_notes_no', 'place_date', 'term',
+        {
+            name: 'price_method',
+            chineseName: '定价方式',
+            option: [
+                {
+                    id: 0,
+                    name: '基本价格+附加费',
+                },
+                {
+                    id: 1,
+                    name: '一口价',
+                }
+            ],
+            filterKey: 'name',
+        }];
     tableKey = 'create_order';
     actions: Action[] = [{
         class: 'glyphicon glyphicon-list-alt',

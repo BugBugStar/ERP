@@ -23,7 +23,7 @@
                     <div class="editable-cell"
                         *ngIf="!data.editing || head === 'id' || head.name === 'id'; else editTpl">
                         <div class="editable-cell-value-wrap">
-                            {{ head.name ? (head.filterKey ? data[head.name][head.filterKey] : data[head.name]) : data[head] }}
+                            {{ getDisplayValue(head, data) }}
                         </div>
                     </div>
                     <ng-template #editTpl>

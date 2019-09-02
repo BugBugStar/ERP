@@ -8,7 +8,7 @@ class Element extends ElementBase {
     new?: boolean;
 }
 export class ElementProperty {
-    name?: string;
+    name: string;
     englishName?: string;
     chineseName?: string;
     option?: string[] | any[];
@@ -197,6 +197,9 @@ export class InputTableComponent implements OnInit {
     }
 
     onSearch($event: string, head: ElementProperty, element: ElementBase) {
+        if (!head.searchFn) {
+            return;
+        }
         head.searchFn($event, element).subscribe(itemList => {
             head.option = itemList;
         });
@@ -206,7 +209,7 @@ export class InputTableComponent implements OnInit {
         if (typeof item === 'string') {
             return item;
         }
-        return filterKey ? item.option[filterKey] : item.option;
+        return filterKey ? (item.option ? item.option[filterKey] : item[filterKey]) : item.option;
     }
 
     onModelChange($event, head, data) {
@@ -220,4 +223,9 @@ export class InputTableComponent implements OnInit {
             }
         }
     }
+
+    getDisplayValue(head, data) {
+        return head.name ? (head.filterKey ? (data[head.name] ? data[head.name][head.filterKey] : '') : data[head.name]) : data[head];
+    }
+
 }

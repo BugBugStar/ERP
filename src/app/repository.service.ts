@@ -16,7 +16,7 @@ export class RepositoryService {
     }
 
     getProduct(productIdKey: string, productId: number): Product {
-        return this.inputTableService.getElementList(REPOSITORY_KEY).find(element =>
+        return this.getProducts().find(element =>
             element[productIdKey] === productId) as Product;
     }
 
@@ -31,6 +31,19 @@ export class RepositoryService {
             .filter(product => product[productIdKey] === productId)
             .map(product => product.length);
     }
+
+    getProductUnitPriceByLength(productId: number, length: number, priceMethod: number, discount = 1, taxFactor = 1): number {
+        const product = this.getProducts().find(p => p.id === productId);
+        if (priceMethod === 0) {
+            if (product.base_price && product.base_length && product.unit_price_per_cm) {
+                const extraLength = (length - Number(product.base_length));
+                let unitPrice = Number(product.base_price) + (extraLength <= 0 ? 0 : extraLength * Number(product.unit_price_per_cm));
+                unitPrice *= 0.01 * discount * taxFactor;
+                return unitPrice;
+            }
+        }
+        return 0;
+    }
 }
 
 export class Product extends ElementBase {
@@ -40,7 +53,11 @@ export class Product extends ElementBase {
     color_editing: string;
     amount_editing: string;
     quantity_editing: string;
+    length_editing: string;
     unit_price_editing: string;
+    base_price: string;
+    base_length: string;
+    unit_price_per_cm: string;
 }
 
 export class ProductDetail extends ElementBase {
