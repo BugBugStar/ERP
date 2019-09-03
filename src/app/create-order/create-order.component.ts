@@ -42,7 +42,30 @@ export class CreateOrderComponent implements OnInit {
                 }
             ],
             filterKey: 'name',
-        }];
+        },
+        {
+            name: 'tax',
+            chineseName: '税率',
+            option: [
+                {
+                    id: 0,
+                    name: '无',
+                    taxFactor: 1,
+                },
+                {
+                    id: 1,
+                    name: '1.08',
+                    taxFactor: 1.08,
+                },
+                {
+                    id: 2,
+                    name: '1.13',
+                    taxFactor: 1.13,
+                }
+            ],
+            filterKey: 'name',
+        },
+    ];
     tableKey = 'create_order';
     actions: Action[] = [{
         class: 'glyphicon glyphicon-list-alt',

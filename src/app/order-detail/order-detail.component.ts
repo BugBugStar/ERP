@@ -45,7 +45,7 @@ export class OrderDetailComponent implements OnInit {
                 product.length_editing = value;
                 const unitPrice = this.getUnitPriceByLength(value, product);
                 product.unit_price_editing = unitPrice.toString();
-                product.amount_editing = (Number(product.quantity_editing) * unitPrice).toFixed(2).toString();
+                product.amount_editing = this.getAmount(Number(product.quantity_editing), unitPrice);
             },
         },
         {
@@ -54,7 +54,7 @@ export class OrderDetailComponent implements OnInit {
             chineseName: '数量（米/条/个）',
             onModelChange: (value, product: Product) => {
                 product.quantity_editing = value;
-                product.amount_editing = (Number(product.quantity_editing) * Number(product.unit_price_editing)).toFixed(2).toString();
+                product.amount_editing = this.getAmount(Number(product.quantity_editing), Number(product.unit_price_editing));
             },
         },
         {
@@ -90,6 +90,11 @@ export class OrderDetailComponent implements OnInit {
         id: number,
         name: string,
     };
+    tax: {
+        id: number,
+        name: string,
+        taxFactor: number,
+    };
 
     preview = false;
 
@@ -104,6 +109,7 @@ export class OrderDetailComponent implements OnInit {
             sales_notes_no,
             place_date,
             price_method,
+            tax,
         } } = this.localStorageService.getObject('route_params');
         this.tableKey.push(element.id);
         this.customer = customer;
@@ -111,9 +117,14 @@ export class OrderDetailComponent implements OnInit {
         this.salesNotesNum = sales_notes_no;
         this.placeDate = place_date;
         this.priceMethod = price_method;
+        this.tax = tax;
     }
 
     getUnitPriceByLength(length: number, product: Product): number {
         return this.repositoryService.getProductUnitPriceByLength(product.item_code_editing.id, length, this.priceMethod.id);
+    }
+
+    getAmount(quantity: number, unitPrice: number): string {
+        return (quantity * unitPrice * this.tax.taxFactor).toFixed(2);
     }
 }
