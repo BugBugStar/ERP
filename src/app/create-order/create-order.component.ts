@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ElementProperty, Action } from '../input-table/input-table.component';
 import { of } from 'rxjs';
 import { CustomerService } from '../customer.service';
-import { ElementBase } from '../input-table.service';
+import { ElementBase, InputTableService } from '../input-table.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../local-storage.service';
 
@@ -27,7 +27,20 @@ export class CreateOrderComponent implements OnInit {
                     })));
             },
             filterKey: 'name',
-        }, 'saler', 'sales_notes_no', 'place_date', 'term',
+        },
+        {
+            name: 'saler',
+            searchFn: (keyword) => {
+                return of(this.inputTableService.getElementList('salers')
+                    .filter(saler => saler.name.includes(keyword))
+                    .map((saler, index) => ({
+                        id: index,
+                        option: saler,
+                    }))
+                );
+            },
+            filterKey: 'name',
+        }, 'sales_notes_no', 'place_date', 'term',
         {
             name: 'price_method',
             chineseName: '定价方式',
@@ -78,6 +91,7 @@ export class CreateOrderComponent implements OnInit {
 
     constructor(
         private router: Router,
+        private inputTableService: InputTableService,
         private customerService: CustomerService,
         private localStorageService: LocalStorageService,
     ) { }

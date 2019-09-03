@@ -83,7 +83,12 @@ export class OrderDetailComponent implements OnInit {
     ];
     tableKey = ['order_detail'];
     customer: CustomerBase;
-    saler: string;
+    saler: {
+        id: number,
+        name: string,
+        tel: string,
+        address: string,
+    };
     salesNotesNum: string;
     placeDate: string;
     priceMethod: {
