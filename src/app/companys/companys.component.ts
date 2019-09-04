@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ElementProperty } from '../input-table/input-table.component';
 
 @Component({
-    selector: 'app-salers',
-    templateUrl: './salers.component.html',
-    styleUrls: ['./salers.component.css']
+    selector: 'app-companys',
+    templateUrl: './companys.component.html',
+    styleUrls: ['./companys.component.css']
 })
-export class SalersComponent implements OnInit {
+export class CompanysComponent implements OnInit {
     elementKeys: (string | ElementProperty)[] = ['id', 'name', 'tel', 'address'];
-    tableKey = 'salers';
+    tableKey = 'companys';
 
     constructor() { }
 

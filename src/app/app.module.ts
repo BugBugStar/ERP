@@ -16,6 +16,7 @@ import { InputTableComponent } from './input-table/input-table.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { RepositoryDetailComponent } from './repository-detail/repository-detail.component';
 import { SalersComponent } from './salers/salers.component';
+import { CompanysComponent } from './companys/companys.component';
 
 /* 配置 angular i18n */
 import { registerLocaleData } from '@angular/common';
@@ -33,7 +34,8 @@ registerLocaleData(zh);
         InputTableComponent,
         OrderDetailComponent,
         RepositoryDetailComponent,
-        SalersComponent
+        SalersComponent,
+        CompanysComponent,
     ],
     imports: [
         BrowserModule,

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ElementProperty } from '../input-table/input-table.component';
 
 @Component({
     selector: 'app-repository-detail',
@@ -7,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./repository-detail.component.css']
 })
 export class RepositoryDetailComponent implements OnInit {
-    elementKeys = ['id', 'name', {
+    elementKeys: (string | ElementProperty)[] = ['id', 'name', {
         name: 'product_id',
         primaryKey: true,
         getValue: () => {

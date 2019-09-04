@@ -8,12 +8,14 @@ import { SalesSummaryComponent } from './sales-summary/sales-summary.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { RepositoryDetailComponent } from './repository-detail/repository-detail.component';
 import { SalersComponent } from './salers/salers.component';
+import { CompanysComponent } from './companys/companys.component';
 
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'customers', component: CustomersComponent },
     { path: 'salers', component: SalersComponent },
+    { path: 'companys', component: CompanysComponent },
     { path: 'create-order', component: CreateOrderComponent },
     { path: 'repository', component: RepositoryComponent },
     { path: 'sales-summary', component: SalesSummaryComponent },

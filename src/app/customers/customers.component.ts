@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerService } from '../customer.service';
+import { ElementProperty } from '../input-table/input-table.component';
+import { InputTableService } from '../input-table.service';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-customers',
@@ -7,10 +9,23 @@ import { CustomerService } from '../customer.service';
     styleUrls: ['./customers.component.css']
 })
 export class CustomersComponent implements OnInit {
-    elementKeys = ['id', 'name', 'tel', 'address', 'company'];
+    elementKeys: (string | ElementProperty)[] = ['id', 'name', 'tel', 'address',
+        {
+            name: 'company',
+            searchFn: (keyword) => {
+                return of(this.inputTableService.getElementList('companys')
+                    .filter(company => company.name.includes(keyword))
+                    .map((company, index) => ({
+                        id: index,
+                        option: company,
+                    }))
+                );
+            },
+            filterKey: 'name',
+        }];
     tableKey = 'customers';
 
-    constructor(private customerService: CustomerService) { }
+    constructor(private inputTableService: InputTableService) { }
 
     ngOnInit() {
     }

@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ElementProperty, Action } from '../input-table/input-table.component';
 import { of } from 'rxjs';
-import { CustomerService } from '../customer.service';
+import { CustomerService, CustomerBase } from '../customer.service';
 import { ElementBase, InputTableService } from '../input-table.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../local-storage.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-create-order',
     templateUrl: './create-order.component.html',
-    styleUrls: ['./create-order.component.css']
+    styleUrls: ['./create-order.component.css'],
+    providers: [DatePipe],
 })
 export class CreateOrderComponent implements OnInit {
     elementKeys: (string | ElementProperty)[] = [
@@ -24,7 +26,21 @@ export class CreateOrderComponent implements OnInit {
                     .map((customer, index) => ({
                         id: index,
                         option: customer,
-                    })));
+                    }))
+                );
+            },
+            onModelChange: (value, order: Order) => {
+                const orders = this.inputTableService.getElementList('create_order') as Order[];
+                const today = this.datePipe.transform(new Date(), 'yMMdd');
+                let contractId = 0;
+                orders.forEach(o => {
+                    if (!o.contract || o.contract.slice(5, 5 + 8) !== today) {
+                        return;
+                    }
+                    contractId = Math.max(Number(o.contract.slice(5 + 8)), contractId);
+                });
+                order.contract_editing = order.customer_editing.company.id.toString().padStart(5, '000') +
+                    today + (contractId + 1).toString().padStart(5, '000');
             },
             filterKey: 'name',
         },
@@ -78,6 +94,11 @@ export class CreateOrderComponent implements OnInit {
             ],
             filterKey: 'name',
         },
+        {
+            name: 'contract',
+            chineseName: '合同号',
+            readonly: true,
+        }
     ];
     tableKey = 'create_order';
     actions: Action[] = [{
@@ -94,9 +115,16 @@ export class CreateOrderComponent implements OnInit {
         private inputTableService: InputTableService,
         private customerService: CustomerService,
         private localStorageService: LocalStorageService,
+        private datePipe: DatePipe,
     ) { }
 
     ngOnInit() {
     }
 
+}
+
+export class Order extends ElementBase {
+    customer_editing: CustomerBase;
+    contract: string;
+    contract_editing: string;
 }

@@ -8,7 +8,7 @@ import { CustomerBase } from '../customer.service';
 @Component({
     selector: 'app-order-detail',
     templateUrl: './order-detail.component.html',
-    styleUrls: ['./order-detail.component.css']
+    styleUrls: ['./order-detail.component.css'],
 })
 export class OrderDetailComponent implements OnInit {
     elementKeys: (string | ElementProperty)[] = [
@@ -100,12 +100,14 @@ export class OrderDetailComponent implements OnInit {
         name: string,
         taxFactor: number,
     };
+    contract: string;
 
     preview = false;
 
     constructor(
         private repositoryService: RepositoryService,
-        private localStorageService: LocalStorageService) { }
+        private localStorageService: LocalStorageService,
+    ) { }
 
     ngOnInit() {
         const { element, element: {
@@ -115,6 +117,7 @@ export class OrderDetailComponent implements OnInit {
             place_date,
             price_method,
             tax,
+            contract,
         } } = this.localStorageService.getObject('route_params');
         this.tableKey.push(element.id);
         this.customer = customer;
@@ -123,6 +126,7 @@ export class OrderDetailComponent implements OnInit {
         this.placeDate = place_date;
         this.priceMethod = price_method;
         this.tax = tax;
+        this.contract = contract;
     }
 
     getUnitPriceByLength(length: number, product: Product): number {

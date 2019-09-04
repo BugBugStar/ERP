@@ -9,7 +9,7 @@
     </div>
     <div class="fr">
         <span class="contract-num-head">合同号：</span>
-        <span>{{ contractNum }}</span>
+        <span>{{ contract }}</span>
     </div>
     <div>
         地址: {{ saler.address }}
@@ -32,7 +32,7 @@
         <div>
             <span>
                 <div>Messrs. 购买方</div>
-                <div class="company">{{ customer?.company }}</div>;
+                <div class="company">{{ customer?.company?.name }}</div>;
             </span>
             <span>
                 <div>Contract Customer 收件人</div>

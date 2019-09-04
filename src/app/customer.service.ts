@@ -35,7 +35,12 @@ export class CustomerBase extends ElementBase {
     name: string;
     tel: string;
     address: string;
-    company: string;
+    company: {
+        id: number;
+        name: string;
+        tel: string;
+        address: string;
+    };
 }
 
 export const customerKeys = ['id', 'name', 'tel', 'address', 'company', ];

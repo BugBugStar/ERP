@@ -17,7 +17,7 @@ export class ElementProperty {
         option: any,
     }[]>;
     filterKey?: string;
-    onModelChange?: (itemCode, element: ElementBase) => void;
+    onModelChange?: (value: any, element: ElementBase) => void;
     readonly?: boolean;
     disabled?: boolean;
     primaryKey?: boolean;
@@ -213,15 +213,21 @@ export class InputTableComponent implements OnInit {
     }
 
     onModelChange($event, head, data) {
+        if (head.name) {
+            data[head.name + '_editing'] = $event;
+        } else {
+            data[head + '_editing'] = $event;
+        }
         if (head.onModelChange) {
             head.onModelChange($event, data);
-        } else {
-            if (head.name) {
-                data[head.name + '_editing'] = $event;
-            } else {
-                data[head + '_editing'] = $event;
-            }
         }
+        //  else {
+        //     if (head.name) {
+        //         data[head.name + '_editing'] = $event;
+        //     } else {
+        //         data[head + '_editing'] = $event;
+        //     }
+        // }
     }
 
     getDisplayValue(head, data) {
