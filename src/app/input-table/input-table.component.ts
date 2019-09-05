@@ -17,7 +17,7 @@ export class ElementProperty {
         option: any,
     }[]>;
     filterKey?: string;
-    onModelChange?: (value: any, element: ElementBase) => void;
+    onModelChange?: (value: any, element: ElementBase, elementList: ElementBase[]) => void;
     readonly?: boolean;
     disabled?: boolean;
     primaryKey?: boolean;
@@ -46,6 +46,10 @@ export class InputTableComponent implements OnInit {
     @Input() actions: Action[] = [];
     @Input() preview = false;
     @Output() onclickDetail = new EventEmitter<ElementBase>();
+    @Output() onsave = new EventEmitter<{
+        element: Element,
+        elementList: Element[],
+    }>();
 
     elementList: Element[];
     titleHeads: (string | {
@@ -166,6 +170,7 @@ export class InputTableComponent implements OnInit {
         } else {
             this.inputTableService.modifyElement(this.tableKey, id, element);
         }
+        this.onsave.emit({ element, elementList: this.elementList });
     }
 
     onclickEdit(element: Element) {
@@ -219,15 +224,8 @@ export class InputTableComponent implements OnInit {
             data[head + '_editing'] = $event;
         }
         if (head.onModelChange) {
-            head.onModelChange($event, data);
+            head.onModelChange($event, data, this.elementList);
         }
-        //  else {
-        //     if (head.name) {
-        //         data[head.name + '_editing'] = $event;
-        //     } else {
-        //         data[head + '_editing'] = $event;
-        //     }
-        // }
     }
 
     getDisplayValue(head, data) {

@@ -17,6 +17,7 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { RepositoryDetailComponent } from './repository-detail/repository-detail.component';
 import { SalersComponent } from './salers/salers.component';
 import { CompanysComponent } from './companys/companys.component';
+import { CompanyBaseInfoComponent } from './company-base-info/company-base-info.component';
 
 /* 配置 angular i18n */
 import { registerLocaleData } from '@angular/common';
@@ -36,6 +37,7 @@ registerLocaleData(zh);
         RepositoryDetailComponent,
         SalersComponent,
         CompanysComponent,
+        CompanyBaseInfoComponent,
     ],
     imports: [
         BrowserModule,

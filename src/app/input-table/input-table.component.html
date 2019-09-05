@@ -1,4 +1,4 @@
-<nz-table #basicTable [nzData]="elementList">
+<nz-table #basicTable [nzData]="elementList" [nzShowPagination]="!preview">
     <thead>
         <tr>
             <ng-container *ngFor="let head of titleHeads">

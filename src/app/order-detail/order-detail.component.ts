@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { RepositoryService, Product } from '../repository.service';
 import { LocalStorageService } from '../local-storage.service';
 import { CustomerBase } from '../customer.service';
+import { InputTableService } from '../input-table.service';
 
 @Component({
     selector: 'app-order-detail',
@@ -101,11 +102,15 @@ export class OrderDetailComponent implements OnInit {
         taxFactor: number,
     };
     contract: string;
+    totalQuantity: number;
+    totalAmount: number;
+    company;
 
     preview = false;
 
     constructor(
         private repositoryService: RepositoryService,
+        private inputTableService: InputTableService,
         private localStorageService: LocalStorageService,
     ) { }
 
@@ -127,6 +132,8 @@ export class OrderDetailComponent implements OnInit {
         this.priceMethod = price_method;
         this.tax = tax;
         this.contract = contract;
+        this.company = this.inputTableService.getElementList('company_base_info')[0];
+        this.initTotal();
     }
 
     getUnitPriceByLength(length: number, product: Product): number {
@@ -135,5 +142,30 @@ export class OrderDetailComponent implements OnInit {
 
     getAmount(quantity: number, unitPrice: number): string {
         return (quantity * unitPrice).toFixed(2);
+    }
+
+    initTotal() {
+        const elementList = this.inputTableService.getElementList(this.tableKey);
+        this.totalQuantity = this.getTotalQuantity(elementList);
+        this.totalAmount = this.getTotalAmount(elementList);
+
+    }
+
+    getTotalQuantity(elementList) {
+        return elementList.reduce((previousValue, currentValue, currentIndex: number, array) =>
+            Number(previousValue.quantity) + Number(currentValue.quantity)
+        );
+    }
+
+    getTotalAmount(elementList) {
+        return elementList.reduce((previousValue, currentValue, currentIndex: number, array) =>
+            Number(previousValue.amount) + Number(currentValue.amount) * this.tax.taxFactor
+        );
+    }
+
+    onsave($event) {
+        const { elementList } = $event;
+        this.totalQuantity = this.getTotalQuantity(elementList);
+        this.totalAmount = this.getTotalAmount(elementList);
     }
 }

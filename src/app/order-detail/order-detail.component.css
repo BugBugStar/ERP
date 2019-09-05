@@ -55,3 +55,43 @@
 .company {
     text-align: center;
 }
+
+.total-div {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.total-span {
+    display: inline-block;
+    width: 50%;
+}
+
+.delivery {
+    font-size: 18px;
+}
+
+.item-title {
+    display: inline-block;
+    width: 150px;
+}
+
+.buyer-signature {
+    float: right;
+    width: 290px;
+}
+
+.total-item, .total-value {
+    display: inline-block;
+}
+
+.total-item {
+    width: 12%;
+}
+
+.total-value {
+    width: 12%;
+}
+
+.footer {
+    margin-top: 100px;
+}

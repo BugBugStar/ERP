@@ -61,7 +61,32 @@
             </span>
         </div>
     </div>
-    <app-input-table [elementKeys]='elementKeys' [tableKey]='tableKey' [preview]=preview>
+    <app-input-table [elementKeys]='elementKeys' [tableKey]='tableKey' [preview]=preview (onsave)="onsave($event)">
     </app-input-table>
+    <div class="footer">
+        <div class="total-div">
+            <span class="total-span">Total AMOUNT 合计</span>
+            <span class="total-item">数量</span>
+            <span class="total-value">{{ totalQuantity }}</span>
+            <span class="total-item">总价</span>
+            <span class="total-value">{{ totalAmount }}</span>
+        </div>
+        <div class="delivery">预计交货期：</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;请确认清单上的内容是否正确，如确认无误请将此清单盖章回传至我司!</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;买方收到此协议，应在2日内签名盖章回传卖方。</div>
+        <div>
+            <span class="item-title">BANK 银行</span>
+            <span>{{ company?.bank }}</span>
+        </div>
+        <div>
+            <span class="item-title">A/C NO. 帐户</span>
+            <span>{{ company?.account }}</span>
+            <span class="buyer-signature">买方签名盖章</span>
+        </div>
+        <div>
+            <span class="item-title">卖方</span>
+            <span>{{ company?.name }}</span>
+        </div>
+    </div>
 </div>
 <button *ngIf="!preview" (click)="preview = !preview;">打印预览</button>

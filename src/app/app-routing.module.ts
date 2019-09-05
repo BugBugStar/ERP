@@ -9,6 +9,7 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { RepositoryDetailComponent } from './repository-detail/repository-detail.component';
 import { SalersComponent } from './salers/salers.component';
 import { CompanysComponent } from './companys/companys.component';
+import { CompanyBaseInfoComponent } from './company-base-info/company-base-info.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
     { path: 'sales-summary', component: SalesSummaryComponent },
     { path: 'order_detail', component: OrderDetailComponent },
     { path: 'repository_detail', component: RepositoryDetailComponent },
+    { path: 'company_base_info', component: CompanyBaseInfoComponent },
     { path: '', component: HomeComponent },
 ];
 
