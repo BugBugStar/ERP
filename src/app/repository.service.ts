@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { InputTableService, ElementBase } from './input-table.service';
+import * as _ from 'lodash';
 
 const REPOSITORY_KEY = 'repository';
 const REPOSITORY_DETAIL_KEY = 'repository-detail';
@@ -20,29 +21,50 @@ export class RepositoryService {
             element[productIdKey] === productId) as Product;
     }
 
-    getProductColor(productIdKey: string, productId: number): string[] {
+    getProductDetail(productIdKey: string, productId: number): ProductDetail[] {
         return (this.inputTableService.getElementList(REPOSITORY_DETAIL_KEY) as ProductDetail[])
-            .filter(product => product[productIdKey] === productId)
-            .map(product => product.color);
+            .filter(product => product[productIdKey] === productId);
     }
 
-    getProductLength(productIdKey: string, productId: number): string[] {
-        return (this.inputTableService.getElementList(REPOSITORY_DETAIL_KEY) as ProductDetail[])
-            .filter(product => product[productIdKey] === productId)
-            .map(product => product.length);
-    }
-
-    getProductUnitPriceByLength(productId: number, length: number, priceMethod: number, discount = 1, taxFactor = 1): number {
+    getProductUnitPriceByLength(productId: number, length: number, priceMethod: number, option: {
+        discount: number,
+        productIdKey: string,
+    } = {
+            discount: 1,
+            productIdKey: 'product_id',
+        }): number {
         const product = this.getProducts().find(p => p.id === productId);
         if (priceMethod === 0) {
             if (product.base_price && product.base_length && product.unit_price_per_cm) {
                 const extraLength = (length - Number(product.base_length));
                 let unitPrice = Number(product.base_price) + (extraLength <= 0 ? 0 : extraLength * Number(product.unit_price_per_cm));
-                unitPrice *= 0.01 * discount * taxFactor;
+                unitPrice *= 0.01 * option.discount;
                 return unitPrice;
             }
+        } else if (priceMethod === 1 && option.productIdKey) {
+            const productDetails = this.getProductDetail(option.productIdKey, productId);
+            const pds: {
+                greater_equal_than_length: number,
+                unit_price?: string,
+            }[] = _.orderBy(productDetails.map(productDetail => ({
+                ...productDetail,
+                greater_equal_than_length: Number(productDetail.greater_equal_than_length),
+            })), 'greater_equal_than_length', 'asc');
+            if (pds.length === 0) {
+                return NaN;
+            }
+            pds.unshift({
+                greater_equal_than_length: 0,
+            });
+            let i = 0;
+            for (; i < pds.length - 1; i++) {
+                if (pds[i].greater_equal_than_length <= length && length < pds[i + 1].greater_equal_than_length) {
+                    break;
+                }
+            }
+            return 0.01 * Number(pds[i].unit_price);
         }
-        return 0;
+        return NaN;
     }
 }
 
@@ -62,7 +84,6 @@ export class Product extends ElementBase {
 
 export class ProductDetail extends ElementBase {
     product_id: number;
-    color: string;
-    length: string;
     unit_price: string;
+    greater_equal_than_length: string;
 }

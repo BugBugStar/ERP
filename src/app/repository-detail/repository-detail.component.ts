@@ -8,13 +8,27 @@ import { ElementProperty } from '../input-table/input-table.component';
     styleUrls: ['./repository-detail.component.css']
 })
 export class RepositoryDetailComponent implements OnInit {
-    elementKeys: (string | ElementProperty)[] = ['id', 'name', {
-        name: 'product_id',
-        primaryKey: true,
-        getValue: () => {
-            return this.productId;
+    elementKeys: (string | ElementProperty)[] = [
+        {
+            name: 'id',
+            hidden: true,
         },
-    }, 'color', 'length', 'unit_price', ];
+        {
+            name: 'product_id',
+            primaryKey: true,
+            getValue: () => {
+                return this.productId;
+            },
+        },
+        {
+            name: 'greater_equal_than_length',
+            chineseName: '≥该长度',
+        },
+        {
+            name: 'unit_price',
+            chineseName: '单价',
+        },
+    ];
     tableKey = 'repository-detail';
     itemCode = '';
     productId = '';

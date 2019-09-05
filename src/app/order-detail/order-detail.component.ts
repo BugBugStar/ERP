@@ -134,6 +134,6 @@ export class OrderDetailComponent implements OnInit {
     }
 
     getAmount(quantity: number, unitPrice: number): string {
-        return (quantity * unitPrice * this.tax.taxFactor).toFixed(2);
+        return (quantity * unitPrice).toFixed(2);
     }
 }
