@@ -56,7 +56,7 @@ export class CreateOrderComponent implements OnInit {
                 );
             },
             filterKey: 'name',
-        }, 'sales_notes_no', 'place_date', 'term',
+        }, 'sales_notes_no', 'place_date', 'styleNum', 'term',
         {
             name: 'price_method',
             chineseName: '定价方式',

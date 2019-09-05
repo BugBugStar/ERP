@@ -41,6 +41,7 @@ export class CustomerBase extends ElementBase {
         tel: string;
         address: string;
     };
+    fax: string;
 }
 
 export const customerKeys = ['id', 'name', 'tel', 'address', 'company', ];

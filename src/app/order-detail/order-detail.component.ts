@@ -102,6 +102,8 @@ export class OrderDetailComponent implements OnInit {
         taxFactor: number,
     };
     contract: string;
+    styleNum: string;
+    term: string;
     totalQuantity: number;
     totalAmount: number;
     company;
@@ -123,6 +125,8 @@ export class OrderDetailComponent implements OnInit {
             price_method,
             tax,
             contract,
+            styleNum,
+            term,
         } } = this.localStorageService.getObject('route_params');
         this.tableKey.push(element.id);
         this.customer = customer;
@@ -132,6 +136,8 @@ export class OrderDetailComponent implements OnInit {
         this.priceMethod = price_method;
         this.tax = tax;
         this.contract = contract;
+        this.styleNum = styleNum;
+        this.term = term;
         this.company = this.inputTableService.getElementList('company_base_info')[0];
         this.initTotal();
     }
