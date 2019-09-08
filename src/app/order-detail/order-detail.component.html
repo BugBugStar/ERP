@@ -76,11 +76,13 @@
         <div>&nbsp;&nbsp;&nbsp;&nbsp;买方收到此协议，应在2日内签名盖章回传卖方。</div>
         <div>
             <span class="item-title">BANK 银行</span>
-            <span>{{ company?.bank }}</span>
+            <span *ngIf="!tax.id">{{ company?.bank_of_self_account }}</span>
+            <span *ngIf="tax.id">{{ company?.bank_of_public_account }}</span>
         </div>
         <div>
             <span class="item-title">A/C NO. 帐户</span>
-            <span>{{ company?.account }}</span>
+            <span *ngIf="!tax.id">{{ company?.self_account }}</span>
+            <span *ngIf="tax.id">{{ company?.public_account }}</span>
             <span class="buyer-signature">买方签名盖章</span>
         </div>
         <div class="company-info">
