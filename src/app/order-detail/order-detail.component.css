@@ -95,3 +95,14 @@
 .footer {
     margin-top: 100px;
 }
+
+.company-info {
+    position: relative;
+}
+
+.company-stamp {
+    position: absolute;
+    top: -120px;
+    left: 256px;
+    height: 150px;
+}

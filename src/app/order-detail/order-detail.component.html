@@ -83,9 +83,10 @@
             <span>{{ company?.account }}</span>
             <span class="buyer-signature">买方签名盖章</span>
         </div>
-        <div>
+        <div class="company-info">
             <span class="item-title">卖方</span>
             <span>{{ company?.name }}</span>
+            <img *ngIf="tax.id" class="company-stamp" src="assets/img/li_bo_da_company.png">
         </div>
     </div>
 </div>
