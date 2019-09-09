@@ -30,6 +30,9 @@ export class CreateOrderComponent implements OnInit {
                 );
             },
             onModelChange: (value, order: Order) => {
+                if (order.contract) {
+                    return;
+                }
                 const orders = this.inputTableService.getElementList('create_order') as Order[];
                 const today = this.datePipe.transform(new Date(), 'yMMdd');
                 let contractId = 0;
