@@ -158,15 +158,15 @@ export class OrderDetailComponent implements OnInit {
     }
 
     getTotalQuantity(elementList) {
-        return elementList.reduce((previousValue, currentValue, currentIndex: number, array) =>
+        return (elementList && elementList.length > 0) ? elementList.reduce((previousValue, currentValue, currentIndex: number, array) =>
             Number(previousValue.quantity) + Number(currentValue.quantity)
-        );
+        ) : 0;
     }
 
     getTotalAmount(elementList) {
-        return elementList.reduce((previousValue, currentValue, currentIndex: number, array) =>
+        return (elementList && elementList.length > 0) ? elementList.reduce((previousValue, currentValue, currentIndex: number, array) =>
             Number(previousValue.amount) + Number(currentValue.amount) * this.tax.taxFactor
-        );
+        ) : 0;
     }
 
     onsave($event) {
